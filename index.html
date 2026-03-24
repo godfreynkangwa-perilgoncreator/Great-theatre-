@@ -1,101 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Streaming Sites Launcher</title>
-<style>
-  body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #ffffff; /* White background */
-    color: #000; /* Dark text for visibility */
-  }
-
-  header {
-    padding: 20px 40px;
-    font-size: 2rem;
-    font-weight: bold;
-    color: #e50914;
-    text-align: center;
-    letter-spacing: 2px;
-  }
-
-  .site-launcher {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 25px;
-    padding: 40px;
-  }
-
-  .site-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.3s;
-  }
-
-  .site-card img {
-    width: 100px;
-    height: 100px;
-    border-radius: 15px;
-    object-fit: cover;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  }
-
-  .site-card:hover {
-    transform: scale(1.1);
-  }
-
-  .site-card span {
-    margin-top: 8px;
-    font-weight: bold;
-  }
-
-  footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 0.9rem;
-    color: #555;
-  }
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Great Theatre - Free Movies & Series</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .card { transition: all 0.3s; }
+    .card:hover { transform: scale(1.08); z-index: 10; }
+    .hero { background-size: cover; background-position: center; }
+  </style>
 </head>
-<body>
+<body class="bg-black text-white min-h-screen">
+  <!-- HEADER -->
+  <header class="fixed top-0 w-full bg-black/80 z-50 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-8">
+      <h1 class="text-4xl font-bold text-red-600">Great Theatre</h1>
+      <div class="flex items-center gap-8">
+        <input id="search" type="text" placeholder="Search movies & series..." 
+               class="bg-zinc-900 text-white px-6 py-3 rounded-full w-80 focus:outline-none focus:ring-2 focus:ring-red-600">
+        <i class="fa-solid fa-user text-2xl"></i>
+      </div>
+    </div>
+  </header>
 
-<header>🌐 Streaming Sites Launcher</header>
+  <!-- HERO BANNER -->
+  <div id="hero" class="hero h-screen flex items-center relative">
+    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
+    <div class="max-w-2xl px-12 relative z-10">
+      <h2 id="hero-title" class="text-6xl font-bold mb-4"></h2>
+      <p id="hero-overview" class="text-lg mb-6 max-w-md"></p>
+      <button onclick="playHeroTrailer()" 
+              class="bg-white text-black px-10 py-4 rounded-md font-bold flex items-center gap-3 hover:bg-gray-200">
+        <i class="fa-solid fa-play"></i> Watch Trailer
+      </button>
+    </div>
+  </div>
 
-<div class="site-launcher">
-  <a class="site-card" href="https://www.dailymotion.com" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Dailymotion_logo_2015.png" alt="Dailymotion">
-    <span>Dailymotion</span>
-  </a>
+  <!-- CONTENT ROWS -->
+  <main class="max-w-7xl mx-auto px-8 -mt-20 relative z-20">
+    <section id="trending" class="mb-12"></section>
+    <section id="popular" class="mb-12"></section>
+    <section id="top-rated" class="mb-12"></section>
+  </main>
 
-  <a class="site-card" href="https://www.youtube.com" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube">
-    <span>YouTube</span>
-  </a>
+  <!-- YOUR ORIGINAL LAUNCHER -->
+  <div class="max-w-7xl mx-auto px-8 py-16 border-t border-zinc-800">
+    <h3 class="text-3xl font-bold mb-8">Quick Access - Streaming Sites</h3>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
+      <!-- Add your cards here - replace links if needed -->
+      <a href="https://www.dailymotion.com" target="_blank" class="bg-zinc-900 hover:bg-zinc-800 rounded-xl p-6 flex flex-col items-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Dailymotion_logo.svg" class="h-12 mb-4">
+        <span class="font-medium">Dailymotion</span>
+      </a>
+      <a href="https://www.youtube.com" target="_blank" class="bg-zinc-900 hover:bg-zinc-800 rounded-xl p-6 flex flex-col items-center">
+        <span class="text-4xl font-black text-red-600 mb-4">You</span>
+        <span class="font-medium">YouTube</span>
+      </a>
+      <a href="https://bollyrules.com" target="_blank" class="bg-zinc-900 hover:bg-zinc-800 rounded-xl p-6 flex flex-col items-center">
+        <span class="text-3xl font-bold text-orange-500 mb-4">Bolly Rules</span>
+      </a>
+      <a href="https://www.netflix.com" target="_blank" class="bg-zinc-900 hover:bg-zinc-800 rounded-xl p-6 flex flex-col items-center">
+        <span class="text-5xl font-black text-red-600 mb-4">N</span>
+        <span class="font-medium">Netflix</span>
+      </a>
+      <a href="https://www.primevideo.com" target="_blank" class="bg-zinc-900 hover:bg-zinc-800 rounded-xl p-6 flex flex-col items-center">
+        <span class="text-4xl font-bold text-blue-500 mb-2">me vid</span>
+        <span class="font-medium">Prime Video</span>
+      </a>
+    </div>
+  </div>
 
-  <a class="site-card" href="https://www.bollyrules.com" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Bollywood_Icon.png" alt="Bolly Rules">
-    <span>Bolly Rules</span>
-  </a>
+  <!-- MODAL -->
+  <div id="modal" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4">
+    <div class="bg-zinc-900 max-w-4xl w-full rounded-3xl overflow-hidden">
+      <div class="relative">
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-4xl">✕</button>
+        <iframe id="trailer" class="w-full aspect-video" allow="autoplay"></iframe>
+      </div>
+      <div class="p-8">
+        <h2 id="modal-title" class="text-4xl font-bold mb-2"></h2>
+        <p id="modal-overview" class="text-gray-300 leading-relaxed"></p>
+      </div>
+    </div>
+  </div>
 
-  <a class="site-card" href="https://www.netflix.com" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
-    <span>Netflix</span>
-  </a>
+  <script>
+    const API_KEY = "a84f73d74cb6ad76a31fb77908d0232f"; // ← REPLACE THIS
+    const BASE_URL = "https://api.themoviedb.org/3";
+    let currentTrailerKey = "";
 
-  <a class="site-card" href="https://www.primevideo.com" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png" alt="Prime Video">
-    <span>Prime Video</span>
-  </a>
-</div>
+    async function fetchData(endpoint) {
+      const res = await fetch(`\( {BASE_URL} \){endpoint}?api_key=${API_KEY}&language=en-US`);
+      return await res.json();
+    }
 
-<footer>© 2026 Streaming Sites Launcher</footer>
+    async function renderRow(sectionId, title, endpoint) {
+      const data = await fetchData(endpoint);
+      const container = document.getElementById(sectionId);
+      container.innerHTML = `
+        <h2 class="text-3xl font-bold mb-6">${title}</h2>
+        <div class="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
+          ${data.results.map(movie => `
+            <div onclick="showModal(${movie.id})" class="card min-w-[200px] cursor-pointer">
+              <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="rounded-xl shadow-xl">
+              <p class="mt-3 text-sm font-medium">${movie.title || movie.name}</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
 
+    async function loadHero() {
+      const data = await fetchData("/trending/all/week");
+      const item = data.results[0];
+      document.getElementById("hero").style.backgroundImage = `url('https://image.tmdb.org/t/p/original${item.backdrop_path}')`;
+      document.getElementById("hero-title").textContent = item.title || item.name;
+      document.getElementById("hero-overview").textContent = item.overview.substring(0, 180) + "...";
+    }
+
+    async function showModal(id) {
+      const data = await fetchData(`/movie/${id}`);
+      document.getElementById("modal-title").textContent = data.title;
+      document.getElementById("modal-overview").textContent = data.overview;
+
+      // Get trailer
+      const videos = await fetchData(`/movie/${id}/videos`);
+      const trailer = videos.results.find(v => v.type === "Trailer" && v.site === "YouTube");
+      currentTrailerKey = trailer ? trailer.key : "dQw4w9wgxcq"; // fallback
+
+      document.getElementById("trailer").src = `https://www.youtube.com/embed/${currentTrailerKey}?autoplay=1`;
+      document.getElementById("modal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("modal").classList.add("hidden");
+      document.getElementById("trailer").src = "";
+    }
+
+    function playHeroTrailer() {
+      // Reuse the same logic as modal (you can expand this)
+      alert("Hero trailer would play here – same modal system!");
+    }
+
+    // Search
+    document.getElementById("search").addEventListener("input", async (e) => {
+      if (e.target.value.length < 3) return;
+      const res = await fetchData(`/search/multi?query=${e.target.value}`);
+      // You can expand this to show results in a new row if you want
+    });
+
+    // Load everything
+    window.onload = () => {
+      loadHero();
+      renderRow("trending", "🔥 Trending Now", "/trending/movie/week");
+      renderRow("popular", "📈 Popular Movies", "/movie/popular");
+      renderRow("top-rated", "⭐ Top Rated", "/movie/top_rated");
+    };
+  </script>
 </body>
 </html>
