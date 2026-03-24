@@ -8,156 +8,230 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     body { font-family: 'Helvetica Neue', Arial, sans-serif; }
-    .card { transition: all 0.3s; }
-    .card:hover { transform: scale(1.08); z-index: 10; }
-    .hero { background-size: cover; background-position: center; }
+    .hero { background-size: cover; background-position: center; transition: background-image 1s ease; }
+    .card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card:hover { transform: scale(1.12); z-index: 20; }
+    .scroll-container { scrollbar-width: none; }
+    .scroll-container::-webkit-scrollbar { display: none; }
+    .row-title { font-size: 1.75rem; }
   </style>
 </head>
-<body class="bg-black text-white min-h-screen">
+<body class="bg-black text-white min-h-screen overflow-x-hidden">
+
   <!-- HEADER -->
-  <header class="fixed top-0 w-full bg-black/80 z-50 py-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between px-8">
-      <h1 class="text-4xl font-bold text-red-600">Great Theatre</h1>
-      <div class="flex items-center gap-8">
+  <header class="fixed top-0 w-full bg-gradient-to-b from-black via-black/80 to-transparent z-50 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10">
+      <h1 class="text-4xl font-bold tracking-tighter text-red-600">Great Theatre</h1>
+      
+      <div class="flex-1 max-w-md mx-8 relative">
         <input id="search" type="text" placeholder="Search movies & series..." 
-               class="bg-zinc-900 text-white px-6 py-3 rounded-full w-80 focus:outline-none focus:ring-2 focus:ring-red-600">
-        <i class="fa-solid fa-user text-2xl"></i>
+               class="w-full bg-zinc-900 text-white px-6 py-3 pl-12 rounded-full focus:outline-none focus:ring-2 focus:ring-red-600">
+        <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <i class="fa-solid fa-bell text-2xl cursor-pointer hover:text-red-500"></i>
+        <div class="w-9 h-9 bg-zinc-700 rounded-full flex items-center justify-center cursor-pointer">
+          <i class="fa-solid fa-user text-xl"></i>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- HERO BANNER -->
-  <div id="hero" class="hero h-screen flex items-center relative">
+  <!-- HERO -->
+  <div id="hero" class="hero h-screen flex items-end relative">
     <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
-    <div class="max-w-2xl px-12 relative z-10">
-      <h2 id="hero-title" class="text-6xl font-bold mb-4"></h2>
-      <p id="hero-overview" class="text-lg mb-6 max-w-md"></p>
-      <button onclick="playHeroTrailer()" 
-              class="bg-white text-black px-10 py-4 rounded-md font-bold flex items-center gap-3 hover:bg-gray-200">
-        <i class="fa-solid fa-play"></i> Watch Trailer
-      </button>
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+    
+    <div class="max-w-2xl px-6 md:px-12 pb-20 relative z-10">
+      <h2 id="hero-title" class="text-5xl md:text-7xl font-bold mb-4 leading-none"></h2>
+      <p id="hero-overview" class="text-lg md:text-xl mb-8 max-w-md text-gray-200"></p>
+      
+      <div class="flex gap-4">
+        <button onclick="playHeroTrailer()" 
+                class="bg-white text-black px-8 py-4 rounded-md font-bold flex items-center gap-3 hover:bg-gray-200 transition">
+          <i class="fa-solid fa-play"></i> Watch Trailer
+        </button>
+        <button onclick="showHeroModal()" 
+                class="bg-white/30 backdrop-blur-md text-white px-8 py-4 rounded-md font-bold flex items-center gap-3 hover:bg-white/40 transition">
+          <i class="fa-solid fa-info-circle"></i> More Info
+        </button>
+      </div>
     </div>
   </div>
 
   <!-- CONTENT ROWS -->
-  <main class="max-w-7xl mx-auto px-8 -mt-20 relative z-20">
-    <section id="trending" class="mb-12"></section>
-    <section id="popular" class="mb-12"></section>
-    <section id="top-rated" class="mb-12"></section>
+  <main class="max-w-7xl mx-auto px-6 md:px-10 -mt-16 relative z-30 pb-20">
+    <section id="trending" class="mb-14"></section>
+    <section id="popular" class="mb-14"></section>
+    <section id="top-rated" class="mb-14"></section>
   </main>
 
-  <!-- YOUR ORIGINAL LAUNCHER -->
-  <div class="max-w-7xl mx-auto px-8 py-16 border-t border-zinc-800">
+  <!-- QUICK ACCESS -->
+  <div class="max-w-7xl mx-auto px-6 md:px-10 py-16 border-t border-zinc-800">
     <h3 class="text-3xl font-bold mb-8">Quick Access - Streaming Sites</h3>
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-      <!-- Add your cards here - replace links if needed -->
-      <a href="https://www.dailymotion.com" target="_blank" class="bg-zinc-900 hover:bg-zinc-800 rounded-xl p-6 flex flex-col items-center">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Dailymotion_logo.svg" class="h-12 mb-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+      <a href="https://www.dailymotion.com" target="_blank" class="group bg-zinc-900 hover:bg-zinc-800 rounded-2xl p-6 flex flex-col items-center transition">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Dailymotion_logo.svg" class="h-14 mb-4 group-hover:scale-110 transition">
         <span class="font-medium">Dailymotion</span>
       </a>
-      <a href="https://www.youtube.com" target="_blank" class="bg-zinc-900 hover:bg-zinc-800 rounded-xl p-6 flex flex-col items-center">
-        <span class="text-4xl font-black text-red-600 mb-4">You</span>
+      <a href="https://www.youtube.com" target="_blank" class="group bg-zinc-900 hover:bg-zinc-800 rounded-2xl p-6 flex flex-col items-center transition">
+        <i class="fa-brands fa-youtube text-6xl text-red-600 mb-4 group-hover:scale-110 transition"></i>
         <span class="font-medium">YouTube</span>
       </a>
-      <a href="https://bollyrules.com" target="_blank" class="bg-zinc-900 hover:bg-zinc-800 rounded-xl p-6 flex flex-col items-center">
-        <span class="text-3xl font-bold text-orange-500 mb-4">Bolly Rules</span>
+      <a href="https://bollyrules.com" target="_blank" class="group bg-zinc-900 hover:bg-zinc-800 rounded-2xl p-6 flex flex-col items-center transition">
+        <span class="text-4xl font-bold text-orange-500 mb-4 group-hover:scale-110 transition">Bolly</span>
+        <span class="font-medium">Bolly Rules</span>
       </a>
-      <a href="https://www.netflix.com" target="_blank" class="bg-zinc-900 hover:bg-zinc-800 rounded-xl p-6 flex flex-col items-center">
-        <span class="text-5xl font-black text-red-600 mb-4">N</span>
+      <a href="https://tubitv.com" target="_blank" class="group bg-zinc-900 hover:bg-zinc-800 rounded-2xl p-6 flex flex-col items-center transition">
+        <span class="text-5xl font-black text-emerald-500 mb-4 group-hover:scale-110 transition">TUBI</span>
+        <span class="font-medium">Tubi (Free)</span>
+      </a>
+      <a href="https://pluto.tv" target="_blank" class="group bg-zinc-900 hover:bg-zinc-800 rounded-2xl p-6 flex flex-col items-center transition">
+        <span class="text-4xl font-bold text-purple-500 mb-4 group-hover:scale-110 transition">PLUTO</span>
+        <span class="font-medium">Pluto TV (Free)</span>
+      </a>
+      <!-- Keep Netflix & Prime if you want paid options -->
+      <a href="https://www.netflix.com" target="_blank" class="group bg-zinc-900 hover:bg-zinc-800 rounded-2xl p-6 flex flex-col items-center transition">
+        <span class="text-6xl font-black text-red-600 mb-4 group-hover:scale-110 transition">N</span>
         <span class="font-medium">Netflix</span>
       </a>
-      <a href="https://www.primevideo.com" target="_blank" class="bg-zinc-900 hover:bg-zinc-800 rounded-xl p-6 flex flex-col items-center">
-        <span class="text-4xl font-bold text-blue-500 mb-2">me vid</span>
+      <a href="https://www.primevideo.com" target="_blank" class="group bg-zinc-900 hover:bg-zinc-800 rounded-2xl p-6 flex flex-col items-center transition">
+        <span class="text-5xl font-bold text-blue-500 mb-4 group-hover:scale-110 transition">Prime</span>
         <span class="font-medium">Prime Video</span>
       </a>
     </div>
   </div>
 
   <!-- MODAL -->
-  <div id="modal" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4">
-    <div class="bg-zinc-900 max-w-4xl w-full rounded-3xl overflow-hidden">
+  <div id="modal" class="hidden fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4">
+    <div class="bg-zinc-900 max-w-4xl w-full rounded-3xl overflow-hidden shadow-2xl">
       <div class="relative">
-        <button onclick="closeModal()" class="absolute top-4 right-4 text-4xl">✕</button>
-        <iframe id="trailer" class="w-full aspect-video" allow="autoplay"></iframe>
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-4xl text-white z-10 hover:text-red-500">✕</button>
+        <iframe id="trailer" class="w-full aspect-video" allow="autoplay; fullscreen"></iframe>
       </div>
       <div class="p-8">
-        <h2 id="modal-title" class="text-4xl font-bold mb-2"></h2>
+        <h2 id="modal-title" class="text-4xl font-bold mb-3"></h2>
         <p id="modal-overview" class="text-gray-300 leading-relaxed"></p>
       </div>
     </div>
   </div>
 
   <script>
-    const API_KEY = "a84f73d74cb6ad76a31fb77908d0232f"; // ← REPLACE THIS
+    const API_KEY = "a84f73d74cb6ad76a31fb77908d0232f"; // ← Replace with your own if you want
     const BASE_URL = "https://api.themoviedb.org/3";
-    let currentTrailerKey = "";
 
     async function fetchData(endpoint) {
-      const res = await fetch(`\( {BASE_URL} \){endpoint}?api_key=${API_KEY}&language=en-US`);
-      return await res.json();
+      try {
+        const res = await fetch(`\( {BASE_URL} \){endpoint}?api_key=${API_KEY}&language=en-US`);
+        if (!res.ok) throw new Error("API error");
+        return await res.json();
+      } catch (e) {
+        console.error(e);
+        return { results: [] };
+      }
+    }
+
+    function createRowHTML(title, movies, sectionId) {
+      return `
+        <h2 class="row-title font-bold mb-6">${title}</h2>
+        <div class="relative group">
+          <button onclick="scrollRow('${sectionId}', -1)" class="absolute left-0 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black p-3 rounded-full z-10 hidden group-hover:block">
+            <i class="fa-solid fa-chevron-left text-2xl"></i>
+          </button>
+          <div id="${sectionId}-container" class="flex gap-6 overflow-x-auto scroll-container pb-8">
+            ${movies.map(movie => `
+              <div onclick="showModal(${movie.id})" class="card min-w-[180px] md:min-w-[220px] cursor-pointer flex-shrink-0">
+                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path || ''}" 
+                     class="rounded-2xl shadow-2xl w-full" 
+                     onerror="this.src='https://via.placeholder.com/500x750?text=No+Image'">
+                <p class="mt-3 text-sm font-medium line-clamp-2">${movie.title || movie.name}</p>
+              </div>
+            `).join('')}
+          </div>
+          <button onclick="scrollRow('${sectionId}', 1)" class="absolute right-0 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black p-3 rounded-full z-10 hidden group-hover:block">
+            <i class="fa-solid fa-chevron-right text-2xl"></i>
+          </button>
+        </div>
+      `;
+    }
+
+    function scrollRow(sectionId, direction) {
+      const container = document.getElementById(sectionId + '-container');
+      container.scrollBy({ left: direction * 400, behavior: 'smooth' });
     }
 
     async function renderRow(sectionId, title, endpoint) {
       const data = await fetchData(endpoint);
       const container = document.getElementById(sectionId);
-      container.innerHTML = `
-        <h2 class="text-3xl font-bold mb-6">${title}</h2>
-        <div class="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
-          ${data.results.map(movie => `
-            <div onclick="showModal(${movie.id})" class="card min-w-[200px] cursor-pointer">
-              <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="rounded-xl shadow-xl">
-              <p class="mt-3 text-sm font-medium">${movie.title || movie.name}</p>
-            </div>
-          `).join('')}
-        </div>
-      `;
+      container.innerHTML = createRowHTML(title, data.results.slice(0, 15), sectionId);
     }
 
     async function loadHero() {
       const data = await fetchData("/trending/all/week");
-      const item = data.results[0];
-      document.getElementById("hero").style.backgroundImage = `url('https://image.tmdb.org/t/p/original${item.backdrop_path}')`;
-      document.getElementById("hero-title").textContent = item.title || item.name;
-      document.getElementById("hero-overview").textContent = item.overview.substring(0, 180) + "...";
+      const item = data.results[0] || {};
+      const hero = document.getElementById("hero");
+      hero.style.backgroundImage = `url('https://image.tmdb.org/t/p/original${item.backdrop_path || ''}')`;
+      
+      document.getElementById("hero-title").textContent = item.title || item.name || "Welcome to Great Theatre";
+      document.getElementById("hero-overview").textContent = (item.overview || "").substring(0, 180) + "...";
     }
+
+    let currentItem = null;
 
     async function showModal(id) {
       const data = await fetchData(`/movie/${id}`);
+      currentItem = data;
+      
       document.getElementById("modal-title").textContent = data.title;
       document.getElementById("modal-overview").textContent = data.overview;
 
-      // Get trailer
       const videos = await fetchData(`/movie/${id}/videos`);
       const trailer = videos.results.find(v => v.type === "Trailer" && v.site === "YouTube");
-      currentTrailerKey = trailer ? trailer.key : "dQw4w9wgxcq"; // fallback
+      const key = trailer ? trailer.key : "dQw4w9wgxcq";
 
-      document.getElementById("trailer").src = `https://www.youtube.com/embed/${currentTrailerKey}?autoplay=1`;
+      document.getElementById("trailer").src = `https://www.youtube.com/embed/${key}?autoplay=1`;
       document.getElementById("modal").classList.remove("hidden");
     }
 
-    function closeModal() {
-      document.getElementById("modal").classList.add("hidden");
-      document.getElementById("trailer").src = "";
+    function showHeroModal() {
+      if (currentItem) showModal(currentItem.id);
+      else alert("Hero item not loaded yet");
     }
 
     function playHeroTrailer() {
-      // Reuse the same logic as modal (you can expand this)
-      alert("Hero trailer would play here – same modal system!");
+      if (currentItem) showModal(currentItem.id);
+      else alert("Loading hero trailer...");
     }
 
-    // Search
-    document.getElementById("search").addEventListener("input", async (e) => {
+    function closeModal() {
+      const modal = document.getElementById("modal");
+      modal.classList.add("hidden");
+      setTimeout(() => {
+        document.getElementById("trailer").src = "";
+      }, 300);
+    }
+
+    // Search with dropdown (basic)
+    const searchInput = document.getElementById("search");
+    searchInput.addEventListener("input", async (e) => {
       if (e.target.value.length < 3) return;
-      const res = await fetchData(`/search/multi?query=${e.target.value}`);
-      // You can expand this to show results in a new row if you want
+      const res = await fetchData(`/search/multi?query=${encodeURIComponent(e.target.value)}`);
+      // For now just console — you can expand to a nice dropdown
+      console.log("Search results:", res.results);
     });
 
-    // Load everything
+    // Close modal when clicking outside content
+    document.getElementById("modal").addEventListener("click", (e) => {
+      if (e.target === document.getElementById("modal")) closeModal();
+    });
+
+    // Initialize
     window.onload = () => {
       loadHero();
       renderRow("trending", "🔥 Trending Now", "/trending/movie/week");
-      renderRow("popular", "📈 Popular Movies", "/movie/popular");
-      renderRow("top-rated", "⭐ Top Rated", "/movie/top_rated");
+      renderRow("popular", "📈 Popular Right Now", "/movie/popular");
+      renderRow("top-rated", "⭐ Top Rated Movies", "/movie/top_rated");
     };
   </script>
 </body>
